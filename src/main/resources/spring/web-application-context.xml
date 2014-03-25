@@ -31,9 +31,17 @@
     </mvc:annotation-driven>
 
 
+    <!-- JasperReports -->
+    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="location" value="classpath:spring/jasper-view.xml" />
+        <property name="order" value="0" />
+    </bean>
+
+
     <!-- Tiles -->
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
+        <property name="order" value="1" />
     </bean>
     <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
         <property name="definitions">
@@ -42,10 +50,6 @@
                 <value>/WEB-INF/views/**/tiles.xml</value>
             </list>
         </property>
-    </bean>
-    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
-        <property name="location" value="classpath:spring/jasper-view.xml" />
-        <property name="order" value="0" />
     </bean>
 
 

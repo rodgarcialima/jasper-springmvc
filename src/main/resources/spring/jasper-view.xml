@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
-    <!--here all the url value should contains the valid path for the jrxml file-->
-
-    <bean id="clientePdfReport"
-          class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView"
-          p:url="classpath:reports/ClienteReport.jrxml"
-          p:reportDataKey="datasource" />
-
-    <bean id="clienteXlsReport"
-          class="org.springframework.web.servlet.view.jasperreports.JasperReportsXlsView"
-          p:url="classpath:reports/ClienteReport.jrxml"
-          p:reportDataKey="datasource" />
-
-    <bean id="clienteHtmlReport"
-          class="org.springframework.web.servlet.view.jasperreports.JasperReportsHtmlView"
-          p:url="classpath:reports/ClienteReport.jrxml"
-          p:reportDataKey="datasource" />
-
-    <bean id="clienteCsvReport"
-          class="org.springframework.web.servlet.view.jasperreports.JasperReportsCsvView"
-          p:url="classpath:reports/ClienteReport.jrxml"
-          p:reportDataKey="datasource" />
+    <!-- Cliente -->
+    <bean id="clienteReport" class="org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView">
+        <property name="url" value="classpath:reports/ClienteReport.jrxml" />
+        <property name="reportDataKey" value="datasource" />
+    </bean>
 
 </beans>
