@@ -1,0 +1,12 @@
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <!-- LAYOUTS -->
+    <definition name="novo" template="/WEB-INF/template/layout.jsp">
+        <put-attribute name="title" value="Mobhub Jasper" />
+        <put-attribute name="header" value="/WEB-INF/template/header.jsp" />
+        <put-attribute name="body" value="Coloque conteúdo aqui" />
+    </definition>
+
+</tiles-definitions>

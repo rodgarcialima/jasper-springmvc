@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+
+
+    <!-- Annotations -->
+    <context:annotation-config />
+
+
+    <!-- AOP -->
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+
+
+    <!-- Scan -->
+    <context:component-scan base-package="
+        br.com.mobhub.jasper.service,
+        br.com.mobhub.jasper.dao" />
+
+
+    <!-- Properties -->
+    <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:db.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <!-- Datasource principal -->
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${db.driver}" />
+        <property name="jdbcUrl" value="${db.prod.url}" />
+        <property name="username" value="${db.prod.user}" />
+        <property name="password" value="${db.prod.password}" />
+        <property name="idleConnectionTestPeriodInMinutes" value="${db.prod.idleConnectionTestPeriodInMinutes}" />
+        <property name="idleMaxAgeInMinutes" value="${db.prod.idleMaxAgeInMinutes}" />
+        <property name="maxConnectionsPerPartition" value="${db.prod.maxConnectionsPerPartition}" />
+        <property name="minConnectionsPerPartition" value="${db.prod.minConnectionsPerPartition}" />
+        <property name="partitionCount" value="${db.prod.partitionCount}" />
+        <property name="acquireIncrement" value="${db.prod.acquireIncrement}" />
+        <property name="statementsCacheSize" value="${db.prod.statementsCacheSize}" />
+        <property name="releaseHelperThreads" value="${db.prod.releaseHelperThreads}" />
+    </bean>
+
+
+    <!-- Transaction Manager -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+
+    <!-- Jdbc -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg name="classicJdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+
+
+    <!-- RestTamplate -->
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
+
+
+    <!-- Messages -->
+    <bean class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="pt_BR" />
+    </bean>
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>/WEB-INF/messages/messages</value>
+                <value>classpath:org/springframework/security/messages</value>
+            </list>
+        </property>
+        <property name="cacheSeconds" value="0" />
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+
+    <!-- Tasks -->
+    <task:annotation-driven />
+
+
+    <!-- MULTIPART RESOLVER -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 20 megas -->
+        <property name="maxUploadSize" value="20971520" />
+        <!-- Site para converter mega em bytes: http://www.matisse.net/bitcalc -->
+        <!-- 10 megas = 10485760 bytes -->
+    </bean>
+
+
+</beans>
